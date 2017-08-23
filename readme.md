@@ -12,6 +12,8 @@ Agents are installed on the computers you want to inventorize. These communicate
 ## Languages, libraries, tools, technologies used and overview
 The code is encapsulated in a **Visual Studio 2017** solution. The available agents are console applications.
 
+Communication to the API happens over HTTP. See the sizingservers.beholder.api documentation for an overview.
+
 ### Agent selector
 The sizingservers.beholder.agent console app does nothing more than checking the OS and launching the correct agent.
 
@@ -28,16 +30,16 @@ Uses WMI to gather system info.
 Runs as a Windows executable, target framework net462.
 
 ### Shared functionality
-Contains the agent configuration functionality, the SystemInformations struct and a reporter class to periodically send JSON serialized info (**NewtonSoft.Json**) to the API over http.
+Contains the agent configuration functionality, the SystemInformations struct and a reporter class to periodically send JSON serialized info (**NewtonSoft.Json**) to the API over HTTP.
 
 Multi-targets netcoreapp1.1 and net462 to be usable in the Linux- and Windows agent both. Right-click the project and click *Edit...* to check this.
 
 ## Build
-You need the dotnet SDK (<https://www.microsoft.com/net/download/core#/sdk>) to build the source and the .Net framework: your build machine needs to be Windows (I think).
+You need the dotnet SDK (<https://www.microsoft.com/net/download/core#/sdk>, <https://www.microsoft.com/net/core#linuxubuntu>) to build the source and the .Net framework if building on Windows, but you have that by default.
 
 You need to be connected to the Internet for restoring NuGet packages.
 
-Execute *build.cmd* (debug config):
+Execute *build.cmd* (or build.sh on Linux, debug config used):
 
     REM 2017 Sizing Servers Lab
     REM University College of West-Flanders, Department GKG 
