@@ -10,7 +10,7 @@ cd ../sizingservers.beholder.agent.linux
 dotnet restore
 dotnet publish -c Debug
 cd ..
-mv Build/netcoreapp1.1/publish/* Build
-rm -r Build/netcoreapp1.1
-mv Build/Linux/netcoreapp1.1/publish/* Build/Linux
-rm -r Build/Linux/netcoreapp1.1
+mv Build/netcoreapp2.0/publish/* Build
+rm -r Build/netcoreapp2.0
+mv Build/Linux/netcoreapp2.0/publish/* Build/Linux
+rm -r Build/Linux/netcoreapp2.0

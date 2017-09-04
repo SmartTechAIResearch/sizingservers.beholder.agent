@@ -10,5 +10,5 @@ cd ..\sizingservers.beholder.agent.windows
 dotnet restore
 dotnet build -c Debug
 cd ..
-copy /Y Build\netcoreapp1.1\publish\* Build\
-rmdir /S /Q Build\netcoreapp1.1\
+copy /Y Build\netcoreapp2.0\publish\* Build\
+rmdir /S /Q Build\netcoreapp2.0\
