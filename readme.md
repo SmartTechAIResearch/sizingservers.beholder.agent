@@ -17,29 +17,29 @@ Communication to the API happens over HTTP. See the sizingservers.beholder.api d
 ### Agent selector
 The sizingservers.beholder.agent console app does nothing more than checking the OS and launching the correct agent.
 
-Runs using **dotnet core 1.1**, target framework netcoreapp1.1.
+Runs using **dotnet core 2.0**, target framework netcoreapp2.0.
 
 ### Linux agent
 Reads the standard output of inxi (<https://github.com/smxi/inxi>). Check the SystemInformationRetreiver class to see how this works.
 
-Runs using **dotnet core 1.1**, target framework netcoreapp1.1.
+Runs using **dotnet core 2.0**, target framework netcoreapp2.0.
 
 ### Windows agent
 Uses WMI to gather system info.
 
-Runs as a Windows executable, target framework net462.
+Runs as a Windows executable, target framework net47.
 
 ### Shared functionality
 Contains the agent configuration functionality, the SystemInformations struct and a reporter class to periodically send JSON serialized info (**NewtonSoft.Json**) to the API over HTTP.
 
-Multi-targets netcoreapp1.1 and net462 to be usable in the Linux- and Windows agent both. Right-click the project and click *Edit...* to check this.
+Multi-targets netcoreapp2.0 and net47 to be usable in the Linux- and Windows agent both. Right-click the project and click *Edit...* to check this.
 
 ## Build
-You need the dotnet SDK (<https://www.microsoft.com/net/download/core#/sdk>, <https://www.microsoft.com/net/core#linuxubuntu>) to build the source and the .Net framework if building on Windows, but you have that by default.
+You need the dotnet SDK (<https://www.microsoft.com/net/download/core#/sdk>, <https://www.microsoft.com/net/core#linuxubuntu>) to build the source and the .Net framework SDK (<https://www.microsoft.com/en-us/download/details.aspx?id=55168>) if building on Windows.
 
 You need to be connected to the Internet for restoring NuGet packages.
 
-Execute *build.cmd* (or build.sh on Linux, debug config used):
+Execute *build.cmd* (or build.sh on Linux, do not forget chmod +x, debug config used):
 
     REM 2017 Sizing Servers Lab
     REM University College of West-Flanders, Department GKG 
@@ -78,14 +78,20 @@ Execute *build.cmd* (or build.sh on Linux, debug config used):
     # reportEvery 5 hours
     reportEvery day
     
-Needs to be configured in the Linux and Windows Build both.
+Needs to be configured in the Linux and Windows Build folder both.
 
 ## Run
-You need the .NET core runtime (<https://www.microsoft.com/net/download/core#/runtime>) to run the build: 1.1.2 at the time of writing.
+You need the .NET core runtime (<https://www.microsoft.com/net/download/core#/runtime>) to run the build: 2.0 at the time of writing.
+
+Execute 
+
+    apt install gawk
+
+on Linux.
 
 You need the .NET framework on Windows, but you have that by default.
 
-Execute run.cmd or run.sh.
+Execute run.cmd or run.sh (do not forget chmod +x).
 
 BETTER is to run the Linux- or Windows agent as a service.  
-For that you need to use either the start script for Linux or NSSM for Windows in the Linux or the Windows folder.
+For that you need to use either use **screen** for Linux or **NSSM** for Windows in the Linux or the Windows folder.
