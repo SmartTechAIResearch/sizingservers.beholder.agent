@@ -62,43 +62,64 @@ namespace sizingservers.beholder.agent.linux {
             output = output.Substring(output.IndexOf("CPU:"));
 
             string cpuSection = GetStringBetween(output, "CPU: ", "Memory: ", "Memory: ", out string outputStub).Trim();
-
-            var processors = new List<string>();
+            var processorsDict = new SortedDictionary<string, int>();
             foreach (string line in cpuSection.Split('\n')) {
-                if (line.Contains(" cache: "))
-                    processors.Add(line.Trim().Substring(0, line.IndexOf(" cache: ")).Replace(": ", " - "));
-            }
+                if (line.Contains(" cache: ")) {
+                    string processor = line.Trim().Substring(0, line.IndexOf(" cache: ")).Replace(": ", " - ");
 
-            sysinfo.processors = string.Join("\t", processors);
+                    if (processorsDict.ContainsKey(processor))
+                        ++processorsDict[processor];
+                    else
+                        processorsDict.Add(processor, 1);
+                }
+            }
+            sysinfo.processors = Helper.ComponentDictToString(processorsDict); ;
 
             string memSection = GetStringBetween(output, "Memory: ", "Network: ", "Network: ", out outputStub).Trim();
-            var memModules = new List<string>();
+            var memModulesDict = new SortedDictionary<string, int>();
             foreach (string line in memSection.Split('\n')) {
-                if (line.Contains("dmidecode") || (line.Contains("Device") && !line.Contains("No Module")))
-                    memModules.Add(line.Trim().Replace(": ", " - "));
-            }
+                if (line.Contains("dmidecode") || (line.Contains("Device") && !line.Contains("No Module"))) {
+                    string memModule = line.Trim().Replace(": ", " - ");
 
-            sysinfo.memoryModules = string.Join("\t", memModules);
+                    if (memModulesDict.ContainsKey(memModule))
+                        ++memModulesDict[memModule];
+                    else
+                        memModulesDict.Add(memModule, 1);
+                }
+            }
+            sysinfo.memoryModules = Helper.ComponentDictToString(memModulesDict);
 
             string networkSection = GetStringBetween(output, "Network: ", "Drives: ", "Drives: ", out outputStub).Trim();
-            var nics = new List<string>();
+            var nicsDict = new SortedDictionary<string, int>();
             foreach (string line in networkSection.Split('\n')) {
-                if (line.Contains("Card: "))
-                    nics.Add(line.Trim().Substring("Card: ".Length).Replace(": ", " - "));
-            }
+                if (line.Contains("Card: ")) {
+                    string nic = line.Trim().Substring("Card: ".Length).Replace(": ", " - ");
 
-            sysinfo.nics = string.Join("\t", nics);
+                    if (nicsDict.ContainsKey(nic))
+                        ++nicsDict[nic];
+                    else
+                        nicsDict.Add(nic, 1);
+                }
+            }
+            sysinfo.nics = Helper.ComponentDictToString(nicsDict);
 
             output = output.Substring(output.IndexOf("Drives: ") + "Drives: ".Length);
-            var disks = new List<string>();
-            foreach (string line in output.Split('\n'))
-                if (line.Length != 0 && !line.Contains("Total Size: "))
-                    disks.Add(line.Trim().Replace(": ", " - "));
+            var disksDict = new SortedDictionary<string, int>();
+            foreach (string line in output.Split('\n')) {
+                if (line.Length != 0 && !line.Contains("Total Size: ")) {
+                    string disk = line.Trim().Replace(": ", " - ");
 
-            sysinfo.disks = string.Join("\t", disks);
+                    if (disksDict.ContainsKey(disk))
+                        ++disksDict[disk];
+                    else
+                        disksDict.Add(disk, 1);
+                }
+            }
+            sysinfo.disks = Helper.ComponentDictToString(disksDict);
 
             return sysinfo;
         }
+
         /// <summary>
         /// 
         /// </summary>

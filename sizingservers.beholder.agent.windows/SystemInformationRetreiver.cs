@@ -98,59 +98,71 @@ namespace sizingservers.beholder.agent.windows {
 
             try {
                 col = new ManagementObjectSearcher(scope, new ObjectQuery("Select Name from Win32_Processor")).Get();
-                var processors = new string[col.Count];
-                int i = 0;
-                foreach (ManagementObject mo in col) processors[i++] = mo["Name"].ToString().Trim();
+                var processorsDict = new SortedDictionary<string, int>();
+                foreach (ManagementObject mo in col) {
+                    string processor = mo["Name"].ToString().Trim();
 
-                sysinfo.processors = string.Join("\t", processors);
+                    if (processorsDict.ContainsKey(processor))
+                        ++processorsDict[processor];
+                    else
+                        processorsDict.Add(processor, 1);
+                }
+                sysinfo.processors = Helper.ComponentDictToString(processorsDict); ;
             }
             catch { }
 
             try {
                 col = new ManagementObjectSearcher(scope, new ObjectQuery("Select * from Win32_PhysicalMemory")).Get();
-                var memoryModules = new string[col.Count];
-                int i = 0;
+                var memModulesDict = new SortedDictionary<string, int>();
                 foreach (ManagementObject mo in col) {
-                    string ram = "";
+                    string memModule = "";
                     try {
-                        ram = ulong.Parse(mo["Capacity"].ToString().Trim()) / (1024 * 1024 * 1024) + " GB";
+                        memModule = ulong.Parse(mo["Capacity"].ToString().Trim()) / (1024 * 1024 * 1024) + " GB";
                     }
                     catch { }
                     try {
-                        if (mo["Manufacturer"] != null) ram += " - manufacturer: " + mo["Manufacturer"].ToString().Trim();
+                        if (mo["Manufacturer"] != null) memModule += " - manufacturer: " + mo["Manufacturer"].ToString().Trim();
                     }
                     catch { }
                     try {
-                        if (mo["Model"] != null) ram += " - model: " + mo["Model"].ToString().Trim();
+                        if (mo["Model"] != null) memModule += " - model: " + mo["Model"].ToString().Trim();
                     }
                     catch { }
                     try {
-                        if (mo["PartNumber"] != null) ram += " - part number: " + mo["PartNumber"].ToString().Trim();
+                        if (mo["PartNumber"] != null) memModule += " - part number: " + mo["PartNumber"].ToString().Trim();
                     }
                     catch { }
                     try {
                         if (mo["Manufacturer"] == null && mo["Model"] == null)
-                            ram += " - unknown manufacturer and model";
+                            memModule += " - unknown manufacturer and model";
                     }
                     catch { }
                     try {
-                        ram += " (" + (mo["Speed"] ?? "?").ToString().Trim() + " Mhz)";
+                        memModule += " (" + (mo["Speed"] ?? "?").ToString().Trim() + " Mhz)";
                     }
                     catch { }
-                    memoryModules[i++] = ram;
+
+                    if (memModulesDict.ContainsKey(memModule))
+                        ++memModulesDict[memModule];
+                    else
+                        memModulesDict.Add(memModule, 1);
                 }
-                sysinfo.memoryModules = string.Join("\t", memoryModules);
+                sysinfo.memoryModules = Helper.ComponentDictToString(memModulesDict);
             }
             catch { }
 
             try {
                 col = new ManagementObjectSearcher(scope, new ObjectQuery("Select Size, Model from Win32_DiskDrive where InterfaceType != 'USB'")).Get();
-                var disks = new string[col.Count];
-                int i = 0;
-                foreach (ManagementObject mo in col)
-                    disks[i++] = string.Format("{0} GB - {1}", ulong.Parse(mo["Size"].ToString().Trim()) / (1024 * 1024 * 1024), mo["Model"].ToString().Trim());
+                var disksDict = new SortedDictionary<string, int>();
+                foreach (ManagementObject mo in col) {
+                    string disk = string.Format("{0} GB - {1}", ulong.Parse(mo["Size"].ToString().Trim()) / (1024 * 1024 * 1024), mo["Model"].ToString().Trim());
 
-                sysinfo.disks = string.Join("\t", disks);
+                    if (disksDict.ContainsKey(disk))
+                        ++disksDict[disk];
+                    else
+                        disksDict.Add(disk, 1);
+                }
+                sysinfo.disks = Helper.ComponentDictToString(disksDict);
             }
             catch { }
 
@@ -178,12 +190,19 @@ namespace sizingservers.beholder.agent.windows {
                     if (!d.ContainsKey(sortedState)) d.Add(sortedState, new SortedSet<string>());
                     d[sortedState].Add(s);
                 }
-                var l = new List<string>(col.Count);
-                for (uint j = 1; j != 4; j++)
-                    if (d.ContainsKey(j))
-                        l.AddRange(d[j]);
 
-                sysinfo.nics = string.Join("\t", l.ToArray());
+                var nicsDict = new SortedDictionary<string, int>();
+                for (uint j = 1; j != 4; j++)
+                    if (d.ContainsKey(j)) {
+                        foreach (string nic in d[j]) {
+                            if (nicsDict.ContainsKey(nic))
+                                ++nicsDict[nic];
+                            else
+                                nicsDict.Add(nic, 1);
+                        }
+                    }
+
+                sysinfo.nics = Helper.ComponentDictToString(nicsDict);
             }
             catch { }
 
