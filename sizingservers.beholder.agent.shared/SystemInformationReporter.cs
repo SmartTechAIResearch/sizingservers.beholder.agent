@@ -47,7 +47,7 @@ namespace sizingservers.beholder.agent.shared {
                 Console.WriteLine(DateTime.Now.ToString("yyyy\"-\"MM\"-\"dd\" \"HH\":\"mm\":\"ss") + " - Reporting: " + json);
                 Console.WriteLine();
 
-                await _httpClient.PostAsync(Config.GetInstance().endpoint + "/api/report?apiKey=" + Config.GetInstance().apiKey, content);
+                await _httpClient.PostAsync(Config.GetInstance().endpoint + "/report?apiKey=" + Config.GetInstance().apiKey, content);
             }
             catch (Exception ex) {
                 ConsoleColor c = Console.ForegroundColor;
