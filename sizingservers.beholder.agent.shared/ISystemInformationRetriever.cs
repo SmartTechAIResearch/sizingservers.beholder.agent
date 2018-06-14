@@ -5,7 +5,7 @@
  */
 
 namespace sizingservers.beholder.agent.shared {
-    public interface ISystemInformationRetreiver {
+    public interface ISystemInformationRetriever {
         SystemInformation Retreive();
     }
 }

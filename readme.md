@@ -35,11 +35,11 @@ Contains the agent configuration functionality, the SystemInformations struct an
 Multi-targets netcoreapp2.0 and net47 to be usable in the Linux- and Windows agent both. Right-click the project and click *Edit...* to check this.
 
 ## Build
-You need the dotnet SDK (<https://www.microsoft.com/net/download/core#/sdk>, <https://www.microsoft.com/net/core#linuxubuntu>) to build the source and the .Net framework SDK (<https://www.microsoft.com/en-us/download/details.aspx?id=55168>) if building on Windows.
+You need the dotnet SDK (<https://www.microsoft.com/net/learn/get-started/linux/ubuntu18-04>) to build the source and the .Net framework SDK (<https://www.microsoft.com/en-us/download/details.aspx?id=55168>) if building on Windows.
 
 You need to be connected to the Internet for restoring NuGet packages.
 
-Execute *build.cmd* (or build.sh on Linux, do not forget chmod +x, debug config used):
+Execute *build_Windows.cmd* (or build_Linux.sh on Linux, do not forget chmod +x, debug config used):
 
     REM 2017 Sizing Servers Lab
     REM University College of West-Flanders, Department GKG 
@@ -81,7 +81,7 @@ Execute *build.cmd* (or build.sh on Linux, do not forget chmod +x, debug config 
 Needs to be configured in the Linux and Windows Build folder both.
 
 ## Run
-You need the .NET core runtime (<https://www.microsoft.com/net/download/core#/runtime>) to run the build: 2.0 at the time of writing.
+You need the .NET core runtime (included in the SDK) to run the build: 2.0 at the time of writing.
 
 Execute 
 

@@ -5,34 +5,32 @@
  */
 
 using sizingservers.beholder.agent.shared;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
 namespace sizingservers.beholder.agent.linux {
-    public class SystemInformationRetreiver : ISystemInformationRetreiver {
-        private static SystemInformationRetreiver _instance = new SystemInformationRetreiver();
+    public class SystemInformationRetriever : ISystemInformationRetriever {
+        private static SystemInformationRetriever _instance = new SystemInformationRetriever();
         private static string _inxiPath, _tempPath;
 
-        private SystemInformationRetreiver() {
+        private SystemInformationRetriever() {
             string thisDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+
             _inxiPath = Path.Combine(thisDirectory, "inxi");
             _tempPath = Path.Combine(thisDirectory, "temp");
 
-            var startInfo = new ProcessStartInfo("chmod +x '" + _inxiPath + "'") {
-                UseShellExecute = true
-            };
+            var startInfo = new ProcessStartInfo("/bin/sh", " -c \"chmod +x '" + _inxiPath + "'\"");
             var p = Process.Start(startInfo);
             p.WaitForExit();
         }
 
-        public static SystemInformationRetreiver GetInstance() { return _instance; }
+        public static SystemInformationRetriever GetInstance() { return _instance; }
         public SystemInformation Retreive() {
             var sysinfo = new SystemInformation();
-            var startInfo = new ProcessStartInfo("'" + _inxiPath + "' -SCDMNm -xi -c 0 > '" + _tempPath + "'") {
-                UseShellExecute = true
-            };
+            var startInfo = new ProcessStartInfo("/bin/sh", " -c \"'" + _inxiPath + "' -SCDMNm -xi -c 0 > '" + _tempPath + "'\"");
             var p = Process.Start(startInfo);
             p.WaitForExit();
 
@@ -59,9 +57,16 @@ namespace sizingservers.beholder.agent.linux {
 
             sysinfo.bios = GetStringBetween(output, "BIOS: ", "\n", "\n", out output).Replace(": ", " - ");
 
-            output = output.Substring(output.IndexOf("CPU:"));
+            string cpu = "CPU: ";
+            int cpuIndex = output.IndexOf(cpu);
+            if (cpuIndex == -1) {
+                cpu = "CPU(s): ";
+                cpuIndex = output.IndexOf(cpu);
+            }
 
-            string cpuSection = GetStringBetween(output, "CPU: ", "Memory: ", "Memory: ", out string outputStub).Trim();
+            output = output.Substring(cpuIndex);
+
+            string cpuSection = GetStringBetween(output, cpu, "Memory: ", "Memory: ", out string outputStub).Trim();
             var processorsDict = new SortedDictionary<string, int>();
             foreach (string line in cpuSection.Split('\n')) {
                 if (line.Contains(" cache: ")) {

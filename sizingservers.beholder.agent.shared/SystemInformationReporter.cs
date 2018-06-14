@@ -17,11 +17,11 @@ namespace sizingservers.beholder.agent.shared {
     /// </summary>
     public static class SystemInformationReporter {
         private static Timer _reportTimer;
-        private static ISystemInformationRetreiver _retreiver;
+        private static ISystemInformationRetriever _retreiver;
 
         private static HttpClient _httpClient = new HttpClient();
 
-        public static void RegisterRetreiverAndStartReporting(ISystemInformationRetreiver retreiver) {
+        public static void RegisterRetreiverAndStartReporting(ISystemInformationRetriever retreiver) {
             _retreiver = retreiver;
             _reportTimer = new Timer(_reportTimer_Callback, null, 0, Config.GetInstance().reportEveryXMinutes * 60 * 1000);
         }

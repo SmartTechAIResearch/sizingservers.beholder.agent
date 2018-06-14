@@ -10,12 +10,12 @@ using System.Management;
 using sizingservers.beholder.agent.shared;
 
 namespace sizingservers.beholder.agent.windows {
-    public class SystemInformationRetreiver : ISystemInformationRetreiver {
-        private static SystemInformationRetreiver _instance = new SystemInformationRetreiver();
+    public class SystemInformationRetriever : ISystemInformationRetriever {
+        private static SystemInformationRetriever _instance = new SystemInformationRetriever();
 
-        private SystemInformationRetreiver() { }
+        private SystemInformationRetriever() { }
 
-        public static SystemInformationRetreiver GetInstance() { return _instance; }
+        public static SystemInformationRetriever GetInstance() { return _instance; }
         public SystemInformation Retreive() {
             var sysinfo = new SystemInformation();
             ManagementScope scope = ConnectScope();
