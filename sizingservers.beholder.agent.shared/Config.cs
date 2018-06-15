@@ -16,6 +16,7 @@ namespace sizingservers.beholder.agent.shared {
         public string apiKey { get; internal set; }
         public int reportEveryXMinutes { get; internal set; }
         public string reportEvery { get; internal set; }
+        public int pingReplierTcpPort { get; internal set; }
 
         /// <summary>
         /// Sets default properties, calls Load().
@@ -48,6 +49,9 @@ namespace sizingservers.beholder.agent.shared {
                     case "reportevery":
                         reportEvery = kvp.Value;
                         reportEveryXMinutes = ParseReportEvery(reportEvery);
+                        break;
+                    case "pingrepliertcpport":
+                        pingReplierTcpPort = int.Parse(kvp.Value);
                         break;
                 }
         }
