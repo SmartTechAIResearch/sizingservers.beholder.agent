@@ -17,7 +17,7 @@ namespace sizingservers.beholder.agent.linux {
 
             Console.WriteLine("SIZING SERVERS LAB LINUX BEHOLDER AGENT");
             Console.WriteLine("  Reporting every " + Config.GetInstance().reportEvery + " to " + Config.GetInstance().endpoint);
-            Console.WriteLine("  Listening to TCP port " + Config.GetInstance().pingReplierTcpPort + " for \"ping\r\n\"");
+            Console.WriteLine("  Listening to TCP port " + Config.GetInstance().pingReplierTcpPort + " for \"ping\\r\\n\"");
             Console.WriteLine();
 
             PingReplier.Start(Config.GetInstance().pingReplierTcpPort);
