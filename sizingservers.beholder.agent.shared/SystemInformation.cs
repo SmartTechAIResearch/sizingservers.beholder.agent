@@ -48,5 +48,9 @@ namespace sizingservers.beholder.agent.shared {
         ///Tab seperated, for dbs that cannot handle arrays; Name + description + status. Example: Wi-Fi - Intel(R) Dual Band Wireless-AC 8260 (connected)
         /// </summary>
         public string nics { get; set; }
+        /// <summary>
+        /// Gets or sets the request report TCP port.
+        /// </summary>
+        public int requestReportTcpPort { get; set; }
     }
 }

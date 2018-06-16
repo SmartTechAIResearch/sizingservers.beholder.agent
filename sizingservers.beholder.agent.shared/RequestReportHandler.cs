@@ -67,6 +67,7 @@ namespace sizingservers.beholder.agent.shared {
                         string line = sr.ReadLine();
                         if (line.Trim().ToLowerInvariant() == "requestreport") {
                             sw.Write("requestreport\r\n");
+                            sw.Flush();
                             await SystemInformationReporter.Report();
                         }
                     }

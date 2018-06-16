@@ -36,6 +36,7 @@ namespace sizingservers.beholder.agent.shared {
                 for (int i = 0; ;)
                     try {
                         sysinfo = _retriever.Retrieve();
+                        sysinfo.requestReportTcpPort = Config.GetInstance().requestReportTcpPort;
                         break;
                     }
                     catch {
