@@ -17,13 +17,14 @@ namespace sizingservers.beholder.agent.windows {
 
             Console.WriteLine("SIZING SERVERS LAB WINDOWS BEHOLDER AGENT");
             Console.WriteLine("  Reporting system information every " + Config.GetInstance().reportEvery + " to " + Config.GetInstance().endpoint);
-            Console.WriteLine("  Listening to TCP port " + Config.GetInstance().pingReplierTcpPort + " for \"ping\\r\\n\"");
+            Console.WriteLine("  Listening to TCP port " + Config.GetInstance().requestReportTcpPort + " for \"requestreport\\r\\n\"");
             Console.WriteLine();
 
-            PingReplier.Start(Config.GetInstance().pingReplierTcpPort);
-            SystemInformationReporter.RegisterRetreiverAndStartReporting(SystemInformationRetriever.GetInstance());
+            RequestReportHandler.Start(Config.GetInstance().requestReportTcpPort);
+            SystemInformationReporter.RegisterRetrieverAndStartReporting(SystemInformationRetriever.GetInstance());
 
             Console.ReadLine();
+            RequestReportHandler.Stop();
         }
     }
 }

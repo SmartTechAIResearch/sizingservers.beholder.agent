@@ -6,6 +6,8 @@
 
 namespace sizingservers.beholder.agent.shared {
     public struct SystemInformation {
+        public string bmcIp;
+
         /// <summary>
         /// Computer name + domain. Example: DELL.WORKGROUP
         /// </summary>

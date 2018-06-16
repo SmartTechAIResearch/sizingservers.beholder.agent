@@ -13,27 +13,29 @@ using System.Threading.Tasks;
 
 namespace sizingservers.beholder.agent.shared {
     /// <summary>
-    /// Reports system information. It uses the info from Config. You need to register a retreiver.
+    /// Reports system information using a timer of by request. It uses the info from Config. You need to register a retriever.
     /// </summary>
     public static class SystemInformationReporter {
         private static Timer _reportTimer;
-        private static ISystemInformationRetriever _retreiver;
+        private static ISystemInformationRetriever _retriever;
 
         private static HttpClient _httpClient = new HttpClient();
 
-        public static void RegisterRetreiverAndStartReporting(ISystemInformationRetriever retreiver) {
-            _retreiver = retreiver;
+        public static void RegisterRetrieverAndStartReporting(ISystemInformationRetriever retriever) {
+            _retriever = retriever;
             _reportTimer = new Timer(_reportTimer_Callback, null, 0, Config.GetInstance().reportEveryXMinutes * 60 * 1000);
         }
-        async static void _reportTimer_Callback(object state) {
-            try {
-                if (_retreiver == null) return;
+        async static void _reportTimer_Callback(object state) { await Report(); }
 
-                SystemInformation sysinfo = new SystemInformation();
+        public async static Task Report() {
+            try {
+                if (_retriever == null) return;
+
+                var sysinfo = new SystemInformation();
 
                 for (int i = 0; ;)
                     try {
-                        sysinfo = _retreiver.Retreive();
+                        sysinfo = _retriever.Retrieve();
                         break;
                     }
                     catch {

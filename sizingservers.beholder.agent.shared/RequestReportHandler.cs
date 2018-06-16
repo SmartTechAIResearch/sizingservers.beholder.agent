@@ -1,11 +1,21 @@
-﻿using System;
+﻿/*
+ * 2018 Sizing Servers Lab
+ * University College of West-Flanders, Department GKG
+ * 
+ */
+
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace sizingservers.beholder.agent.shared {
-    public static class PingReplier {
+    /// <summary>
+    /// Listens for requestreport\r\n, echo's the message back and instructs the reporter to send sys info over http to the api.
+    /// </summary>
+    public static class RequestReportHandler {
         private static TcpListener _listener, _ipv6Listener;
         private static bool _started;
 
@@ -25,12 +35,12 @@ namespace sizingservers.beholder.agent.shared {
 
                 _started = true;
             }
-            catch (Exception ex) {                
+            catch (Exception ex) {
                 Stop();
 
                 ConsoleColor c = Console.ForegroundColor;
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(DateTime.Now.ToString("yyyy\"-\"MM\"-\"dd\" \"HH\":\"mm\":\"ss") + " - Starting ping replier failed:\n" + ex);
+                Console.WriteLine(DateTime.Now.ToString("yyyy\"-\"MM\"-\"dd\" \"HH\":\"mm\":\"ss") + " - Starting the request report handler failed:\n" + ex);
                 Console.WriteLine();
                 Console.ForegroundColor = c;
             }
@@ -42,12 +52,12 @@ namespace sizingservers.beholder.agent.shared {
                     HandleStream(listener.AcceptTcpClient());
                 }
                 catch {
-                    //Log errors?
+                    //Do not log errors. We do not care for disconnects.
                 }
         }
 
         private static void HandleStream(TcpClient client) {
-            ThreadPool.QueueUserWorkItem((c) => {
+            ThreadPool.QueueUserWorkItem(async (c) => {
                 try {
                     var stream = (c as TcpClient).GetStream();
                     var sr = new StreamReader(stream);
@@ -55,13 +65,14 @@ namespace sizingservers.beholder.agent.shared {
 
                     while (_started) {
                         string line = sr.ReadLine();
-                        if (line.Trim().ToLowerInvariant() == "ping") {
-                            sw.WriteLine("pong");
+                        if (line.Trim().ToLowerInvariant() == "requestreport") {
+                            sw.Write("requestreport\r\n");
+                            await SystemInformationReporter.Report();
                         }
                     }
                 }
                 catch {
-                    //Log errors?
+                    //Do not log errors. We do not care for disconnects. Report errors are logged in SystemInformationReporter.Report().
                 }
             }, client);
         }
