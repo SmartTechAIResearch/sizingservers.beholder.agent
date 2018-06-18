@@ -6,8 +6,6 @@
 
 namespace sizingservers.beholder.agent.shared {
     public struct SystemInformation {
-        public string bmcIp;
-
         /// <summary>
         /// Computer name + domain. Example: DELL.WORKGROUP
         /// </summary>
@@ -48,6 +46,9 @@ namespace sizingservers.beholder.agent.shared {
         ///Tab seperated, for dbs that cannot handle arrays; Name + description + status. Example: Wi-Fi - Intel(R) Dual Band Wireless-AC 8260 (connected)
         /// </summary>
         public string nics { get; set; }
+        /// <summary>
+        /// </summary>
+        public string bmcIp { get; set; }
         /// <summary>
         /// Gets or sets the request report TCP port.
         /// </summary>
