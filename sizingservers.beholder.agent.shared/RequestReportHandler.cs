@@ -9,7 +9,6 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace sizingservers.beholder.agent.shared {
     /// <summary>
@@ -22,6 +21,8 @@ namespace sizingservers.beholder.agent.shared {
 
         public static void Start(int port) {
             try {
+                Stop();
+
                 _listener = new TcpListener(IPAddress.Any, port);
                 _ipv6Listener = new TcpListener(IPAddress.IPv6Any, port);
 
