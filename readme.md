@@ -1,6 +1,9 @@
 # sizingservers.beholder.agent
+*2018-06-22 - 0.1: Feature complete Windows and Linux (Ubuntu) beholder agent.*
+
     2018 Sizing Servers Lab  
     University College of West-Flanders, Department GKG
+    Dieter Vandroemme
 
 
 ![flow](readme_img/flow.png)
@@ -128,7 +131,6 @@ Arrays are formatted tab-space delimited values, for efficiency: no need to do c
 Notice that the *requestReportTcpPort* in in the output so the API knows what port to communicate to.
 
 ### Linux agent
-
     {
       "hostname": "Dieter-Ubu",
       "ips": "192.168.20.175\tfe80::250:56ff:fe92:1034",
@@ -146,8 +148,7 @@ Notice that the *requestReportTcpPort* in in the output so the API knows what po
     
  *See what happens if you do not run as root?*
  
- ### Windows agent
- 
+ ### Windows agent 
      {
       "hostname": "DELL-DIDJEEH.WORKGROUP",
       "ips": "192.168.117.1",
