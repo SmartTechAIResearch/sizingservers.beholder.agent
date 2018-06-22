@@ -1,6 +1,8 @@
 # sizingservers.beholder.agent
 *2018-06-22 - 0.1: Feature complete Windows and Linux (Ubuntu) beholder agent.*
 
+*Compatible with sizingservers.beholder.dnfapi 0.1*
+
     2018 Sizing Servers Lab  
     University College of West-Flanders, Department GKG
     Dieter Vandroemme
