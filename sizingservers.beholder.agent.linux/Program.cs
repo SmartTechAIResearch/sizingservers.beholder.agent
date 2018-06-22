@@ -16,6 +16,7 @@ namespace sizingservers.beholder.agent.linux {
             if (!_namedMutex.WaitOne()) return;
 
             Console.WriteLine("SIZING SERVERS LAB LINUX BEHOLDER AGENT");
+            Console.WriteLine("  Run this tool as root for dmidecode (fetches memory information) and make sure that ipmitool is installed.");
             Console.WriteLine("  Reporting every " + Config.GetInstance().reportEvery + " to " + Config.GetInstance().endpoint);
             Console.WriteLine("  Listening to TCP port " + Config.GetInstance().requestReportTcpPort + " for \"requestreport\\r\\n\"");
             Console.WriteLine();
