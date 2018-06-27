@@ -1,7 +1,7 @@
 # sizingservers.beholder.agent
 *MIT Licensed   
-[Sizing Servers Research Lab](https://www.sizingservers.be) at [University College of West-Flanders, Department GKG](https://www.howest.be)  
-Dev: [Dieter Vandroemme](https://about.me/didjeeh)*
+<a href="https://www.sizingservers.be" target="_blank">Sizing Servers Research Lab</a> at <a href="https://www.howest.be" target="_blank">University College of West-Flanders, Department GKG</a>  
+Dev: <a href="https://about.me/didjeeh" target="_blank">Dieter Vandroemme</a>*
 
 
 ## Table of contents
