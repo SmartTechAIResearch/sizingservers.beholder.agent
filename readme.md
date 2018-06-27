@@ -186,4 +186,4 @@ Notice that the *requestReportTcpPort* in in the output so the API knows what po
     
 <a name="contribute"></a>
 ## Contribute
-Feel free to post issues or fork and submit pull requests. 
+Feel free to post issues and/or fork and submit pull requests. 
