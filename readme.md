@@ -1,13 +1,22 @@
 # sizingservers.beholder.agent
-*2018-06-22 - 0.1: Feature complete Windows and Linux (Ubuntu) beholder agent.*
-
-*Compatible with sizingservers.beholder.dnfapi 0.1*
-
-    2018 Sizing Servers Lab  
-    University College of West-Flanders, Department GKG
-    Dieter Vandroemme
+*MIT Licensed   
+[Sizing Servers Research Lab](https://www.sizingservers.be) at [University College of West-Flanders, Department GKG](https://www.howest.be)  
+Dev: [Dieter Vandroemme](https://about.me/didjeeh)*
 
 
+## Table of contents
+1. [Introduction](#introduction)
+2. [Version history](#version_history)
+3. [Languages, libraries, tools, technologies used and overview](#languages)
+4. [Build](#build)
+5. [Configure](#configure)
+6. [Run](#run)
+7. [Example output](#example_output)
+8. [Contribute](#contribute)
+
+
+<a name="introduction"></a>
+## Introduction
 ![flow](readme_img/flow.png)
 
 This project is part of a computer hardware inventorization solution, together with sizingservers.beholder.dnfapi and sizingservers.beholder.frontend.
@@ -16,6 +25,12 @@ Agents are installed on the computers / VMs you want to inventorize. Tools like 
 
 An agent communicates with the REST API which stores hardware info. The front-end app visualizes that info. 
 
+<a name="version_history"></a>
+## Version history
+**2018-06-22** - **version 0.1**: Feature complete Windows and Linux (Ubuntu) beholder agent.  
+*Compatible with sizingservers.beholder.dnfapi 0.1*
+
+<a name="languages"></a>
 ## Languages, libraries, tools, technologies used and overview
 The code is encapsulated in a **Visual Studio 2017** solution. The available agents are console applications.
 
@@ -44,6 +59,7 @@ This functionality exists so we can have the best of both pushing and polling: p
 
 Multi-targets netcoreapp2.0 and net47 to be usable in the Linux- and Windows agent both. Open the solution using Visual Studio and right-click the project and click *Edit...* to check this. *Ignore the reference warning. Multi-targeting works as it should.*
 
+<a name="build"></a>
 ## Build
 You need the dotnet SDK (<https://www.microsoft.com/net/learn/get-started/linux/ubuntu18-04>) to build the source and the .Net framework SDK (<https://www.microsoft.com/en-us/download/details.aspx?id=55168>) if building on Windows.
 
@@ -71,8 +87,8 @@ Execute *build_Windows.cmd* (or build_Linux.sh on Linux, do not forget chmod +x,
     copy /Y Build\Linux\netcoreapp1.1\publish\* Build\Linux
     rmdir /S /Q Build\Linux\netcoreapp1.1\
     
+<a name="configure"></a>
 ## Configure
-
 I recommend setting the *report frequency* not to, euhm, frequent. It is important that the agent registers itself to the API at startup, or at a time that the API is available should the API not be running.
 
 Leave the report frequency to the API *PollIntervalInSeconds* setting.
@@ -97,6 +113,7 @@ Leave the report frequency to the API *PollIntervalInSeconds* setting.
     
 Needs to be configured in the Linux and Windows Build folder both.
 
+<a name="run"></a>
 ## Run
 Tested on Ubuntu 16.04 to 18.04 and Windows 10 / Server 2016.
 
@@ -113,9 +130,9 @@ You need the .NET framework on Windows, but you have that by default.
 Execute **run.cmd** or **run.sh** (do not forget chmod +x). Please note the Linux' dmidecode needs root rights.
 
 BETTER is to run the Linux- or Windows agent as a service.  
-For that you need to use either use **screen** for Linux or **NSSM** / **startAsService.cmd** for Windows in the Linux or the Windows folder.
+For that you need to use either use **screen** for Linux or **startAsService.cmd** (uses **NSSM**) for Windows in the Windows build folder.
 
-**startAsService.cmd**, run as administrator!:
+**startAsService.cmd** contents (run as administrator!):
 
     REM 2018 Sizing Servers Lab
     REM University College of West-Flanders, Department GKG 
@@ -127,6 +144,7 @@ For that you need to use either use **screen** for Linux or **NSSM** / **startAs
     nssm start sizingservers.beholder.agent
     echo If you get system info on the frontend , everything is working. If not, check if you have set the endpoint in the config correctly or the Windows Event Viewer for errors, if any.
     
+<a name="example_output"></a>
 ## Example output
 Arrays are formatted tab-space delimited values, for efficiency: no need to do conversions for dbs, like SQLite3, that cannot handle arrays.
 
@@ -165,3 +183,7 @@ Notice that the *requestReportTcpPort* in in the output so the API knows what po
       "bmcIp": "BMC not found",
       "requestReportTcpPort": 56575
     }
+    
+<a name="contribute"></a>
+## Contribute
+Feel free to post issues or fork and submit pull requests. 
